@@ -24,9 +24,11 @@
                 <li>Approval: {{ allowance }}</li>
               </ul>
               <v-btn color="primary" v-if="needApprove" @click="approve(contracts)">
+                <!-- v-if="needApprove" -->
                 Approve
               </v-btn>
-              <v-btn color="primary" v-else @click="send(contracts)">
+              <v-btn color="primary" @click="send(contracts)">
+                <!-- v-else -->
                 Submit
               </v-btn>
             </v-card-text>
@@ -34,7 +36,8 @@
             <v-card-text v-if="tx">
               <vth-tx :tx="tx">
                 <template slot-scope="tx">
-                  <pre>{{ tx }}</pre>
+                  <a :href="`https://etherscan.io/tx/${tx.tx.hash || tx.tx.transactionHash}`">View Tx {{ tx.tx.hash || tx.tx.transactionHash }}</a>
+                  <pre style="overflow: scroll">{{ tx }}</pre>
                 </template>
               </vth-tx>
             </v-card-text>
@@ -49,6 +52,7 @@
 <script>
 import BN from 'bignumber.js'
 import Contracts from '~/components/Contracts'
+BN.config({ EXPONENTIAL_AT: 100 })
 export default {
   components: {
     Contracts
@@ -63,10 +67,10 @@ export default {
   },
   computed: {
     addresses() {
-      return this.textAddresses.split('\n').map(x => x.split(',')[0])
+      return this.textAddresses.split('\n').map(x => x.split('\t')[0])
     },
     values() {
-      return this.textAddresses.split('\n').map(x => BN(x.split(',')[1]).multipliedBy(1e18))
+      return this.textAddresses.split('\n').map(x => BN(x.split('\t')[1]).multipliedBy(1e18))
     },
     total() {
       return this.values.reduce((prev, x) => prev.plus(x), BN(0))
