@@ -1,0 +1,15 @@
+[{
+  "constant": false,
+  "inputs": [{
+    "name": "addresses",
+    "type": "address[]"
+  }, {
+    "name": "amounts",
+    "type": "uint256[]"
+  }],
+  "name": "distribute",
+  "outputs": [],
+  "payable": false,
+  "stateMutability": "nonpayable",
+  "type": "function"
+}]
